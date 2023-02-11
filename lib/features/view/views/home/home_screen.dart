@@ -1,8 +1,8 @@
-// ignore_for_file: avoid_unnecessary_containers
-
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import '../../../../utils/app_colors.dart';
 import '../../app_widgets/home_slider.dart';
+import 'dart:math' as math;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -47,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
           textAlign: TextAlign.end,
         ),
       ),
-     
     ],
   );
   Row evaluationRow = Row(
@@ -83,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
         Icons.star_outlined,
         color: AppColor.goldColor,
       ),
-     
     ],
   );
   Row priceRow = Row(
@@ -126,7 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
           textDirection: TextDirection.rtl,
         ),
       ),
-     
     ],
   );
   Row quantitiyDiscountRow = Row(
@@ -155,16 +152,19 @@ class _HomeScreenState extends State<HomeScreen> {
           )),
         ),
       ),
-     
     ],
   );
-  
+  bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.whiteColor,
       appBar: simpleAppBar,
       body: Padding(
-        padding: const EdgeInsets.only(right: 26, top: 10),
+        padding: const EdgeInsets.only(
+          right: 26,
+          top: 10,
+        ),
         child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
@@ -187,14 +187,108 @@ class _HomeScreenState extends State<HomeScreen> {
             quantitiyDiscountRow,
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.only(left: 26,top: 20),
-              child: Text("Lorem ipsum dolor sit amet, ipiscingisl amet orci ipsum dis lectus hac mauris.",
-              style: TextStyle(color: AppColor.headLineColor,fontSize: 16),
-              textAlign: TextAlign.end,
+              padding: const EdgeInsets.only(left: 26, top: 20),
+              child: Text(
+                "Lorem ipsum dolor sit amet, ipiscingisl amet orci ipsum dis lectus hac mauris.",
+                style: TextStyle(color: AppColor.headLineColor, fontSize: 16),
+                textAlign: TextAlign.end,
               ),
             ),
-            
+            const SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 26),
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: _buildPanel(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
+  Widget _buildPanel(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        color: AppColor.greyColor,
+      ),
+      child: ExpandablePanel(
+        header: ListTile(
+          tileColor: AppColor.greyColor,
+          title: const Text("أسعار الجملة"),
+        ),
+        collapsed: const SizedBox(),
+        theme: ExpandableThemeData(
+          iconColor: AppColor.darkGreyColor,
+          animationDuration: const Duration(milliseconds: 500),
+          tapHeaderToExpand: true,
+          hasIcon: true,
+          expandIcon: Icons.arrow_back_ios_new,
+          collapseIcon: Icons.expand_more,
+          iconSize: 20,
+          bodyAlignment:ExpandablePanelBodyAlignment.center,
+          headerAlignment: ExpandablePanelHeaderAlignment.center,
+        ),
+        expanded: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("1"),
+                Text("2"),
+                Text("2"),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("1"),
+                Text("2"),
+                Text("2"),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("1"),
+                Text("2"),
+                Text("2"),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("1"),
+                Text("2"),
+                Text("2"),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("1"),
+                Text("2"),
+                Text("2"),
+              ],
+            ),
           ],
         ),
       ),

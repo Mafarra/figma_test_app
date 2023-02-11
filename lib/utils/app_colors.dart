@@ -11,6 +11,8 @@ class AppColor {
   static Color greenYelowColor = HexColor.fromHex("#02B503");
   static Color whiteColor = HexColor.fromHex("#FFFFFF");
   static Color redColor = HexColor.fromHex("#EF476F");
+  static Color greyColor = HexColor.fromHex("#FAFAFA");
+  static Color darkGreyColor = HexColor.fromHex("#5F5F5F");
 }
 
 extension HexColor on Color {
