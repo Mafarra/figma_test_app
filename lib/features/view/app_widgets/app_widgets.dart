@@ -1,7 +1,7 @@
 
+// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import '../../../utils/app_colors.dart';
-
 class CustomSizedBox extends StatelessWidget {
   double? height = 0;
   double? width = 0;
