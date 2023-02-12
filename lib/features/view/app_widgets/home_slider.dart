@@ -134,7 +134,7 @@ class _HomeSliderState extends State<HomeSlider> {
                   radius: 10,
                   spacing: 8,
                   dotHeight: 5,
-                  dotWidth: 20,
+                  dotWidth: 15,
                   dotColor: AppColor.greenColor.withOpacity(.4),
                   activeDotColor: AppColor.greenColor,
                   offset: 0.0,
