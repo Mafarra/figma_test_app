@@ -1,8 +1,5 @@
 // ignore_for_file: must_be_immutable
-import 'package:expandable/expandable.dart';
-import 'package:figma_test_app/utils/app_media.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../../../utils/app_colors.dart';
 import '../../app_widgets/app_widgets.dart';
 import '../../app_widgets/home_slider.dart';
@@ -10,11 +7,9 @@ import 'home_widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
   bool isExpanded = false;
   @override
