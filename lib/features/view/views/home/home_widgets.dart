@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_media.dart';
+import '../../app_widgets/app_widgets.dart';
 
 Widget buildPanel(BuildContext context) {
   return Padding(
@@ -32,31 +33,6 @@ Widget buildPanel(BuildContext context) {
       ),
     ),
   );
-}
-
-class TopTitleRow extends StatelessWidget {
-  const TopTitleRow({
-    Key? key,
-  }) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(
-          child: Text(
-            "عطر شانيل 5 مل",
-            style: TextStyle(
-                color: AppColor.headLineColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w700),
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.end,
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 class EvaluationRow extends StatelessWidget {
@@ -391,7 +367,7 @@ class HomeScreenListTile extends StatelessWidget {
       leading: Icon(
         Icons.arrow_back_ios,
         size: 20,
-        color: AppColor.blackColor,
+        color: AppColor.darkGreyColor,
       ),
     );
   }
@@ -410,3 +386,73 @@ ExpandableThemeData expandedTheme() {
       headerAlignment: ExpandablePanelHeaderAlignment.center,
       iconPadding: const EdgeInsets.only(right: 10));
 }
+
+class RoundedRectangleWithText extends StatelessWidget {
+  Color? color;
+  String? text;
+  RoundedRectangleWithText({
+    Key? key,
+    this.text,
+    this.color,
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return Container(
+      width: (screenWidth / 2.5),
+      height: 50,
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        border: Border.all(width: 1.0, color: color!),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: CustomText(
+          text: text,
+          textColor: color,
+          fontSize: 16,
+          textDirection: TextDirection.rtl,
+        ),
+      ),
+    );
+  }
+}
+
+
+class ProductSizeColumn extends StatelessWidget {
+  const ProductSizeColumn({
+    Key? key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        CustomText(
+          text: "الحجم",
+          textColor: AppColor.blackColor,
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          textOverflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.end,
+        ),
+        CustomSizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.only(left: 26),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RoundedRectangleWithText(text: "50 مل (250 SAR)",color: AppColor.greenColor,),
+              CustomSizedBox(width: screenWidth*0.06),
+              RoundedRectangleWithText(text: "100 مل (500 SAR)",color: AppColor.detailsColor,),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+

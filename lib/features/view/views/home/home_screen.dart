@@ -10,10 +10,11 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
 class _HomeScreenState extends State<HomeScreen> {
-  bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: simpleAppBar(title: 'عطور وتجميل'),
@@ -28,7 +29,14 @@ class _HomeScreenState extends State<HomeScreen> {
             CustomSizedBox(
               height: 20,
             ),
-            const TopTitleRow(),
+            CustomText(
+              text: "عطر شانيل 5 مل",
+              textColor: AppColor.headLineColor,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              textOverflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+            ),
             const HomeSlider(),
             CustomSizedBox(
               height: 10,
@@ -67,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
             HomeScreenListTile(
               title: "التقييمات",
             ),
-            const CustomDividerWithPadding(),
+            const ProductSizeColumn(),
+            
           ],
         ),
       ),
