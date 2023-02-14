@@ -8,28 +8,25 @@ import '../../../../utils/app_media.dart';
 import '../../app_widgets/app_widgets.dart';
 
 Widget buildPanel(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 26),
-    child: Directionality(
-      textDirection: TextDirection.rtl,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: AppColor.greyColor,
-        ),
-        child: ExpandablePanel(
-          header: const ListTile(
-            title: Text(
-              "أسعار الجملة",
-              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
-            ),
+  return Directionality(
+    textDirection: TextDirection.rtl,
+    child: Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        color: AppColor.greyColor,
+      ),
+      child: ExpandablePanel(
+        header: const ListTile(
+          title: Text(
+            "أسعار الجملة",
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           ),
-          collapsed: const SizedBox(),
-          theme: expandedTheme(),
-          expanded: EpandedContainer(svgImag: AppMedia.svgImag),
         ),
+        collapsed: const SizedBox(),
+        theme: expandedTheme(),
+        expanded: EpandedContainer(svgImag: AppMedia.svgImag),
       ),
     ),
   );
@@ -45,31 +42,27 @@ class EvaluationRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Container(
-          child: Text(
-            "5 تقييمات ",
-            style: TextStyle(
-              color: AppColor.headLineColor,
-              fontSize: 18,
-            ),
-            textDirection: TextDirection.rtl,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.end,
+        Text(
+          "5 تقييمات ",
+          style: TextStyle(
+            color: AppColor.headLineColor,
+            fontSize: 12,
           ),
+          textDirection: TextDirection.rtl,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.end,
         ),
         const SizedBox(
           width: 5,
         ),
-        Container(
-          child: Text(
-            "5.0",
-            style: TextStyle(
-              color: AppColor.goldColor,
-              fontSize: 18,
-            ),
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.end,
+        Text(
+          "5.0",
+          style: TextStyle(
+            color: AppColor.goldColor,
+            fontSize: 18,
           ),
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.end,
         ),
         Icon(
           Icons.star_outlined,
@@ -93,9 +86,10 @@ class PriceRow extends StatelessWidget {
         Text(
           "خصم  20 %",
           style: TextStyle(
-              fontSize: 18,
-              color: AppColor.greenYelowColor,
-              fontWeight: FontWeight.bold),
+            fontSize: 18,
+            color: AppColor.greenYelowColor,
+            fontWeight: FontWeight.w500,
+          ),
           textDirection: TextDirection.rtl,
         ),
         const SizedBox(
@@ -267,12 +261,9 @@ class CustomDividerWithPadding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 26.0),
-      child: Divider(
-        color: AppColor.whiteGreyColor,
-        thickness: 1,
-      ),
+    return Divider(
+      color: AppColor.whiteGreyColor,
+      thickness: 1,
     );
   }
 }
@@ -356,13 +347,14 @@ class HomeScreenListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.only(
-        left: 40,
-      ),
       onTap: () => onTap,
       title: Text(
         title ?? "",
         textDirection: TextDirection.rtl,
+        style: TextStyle(
+            fontSize: 16,
+            color: AppColor.darkGreyColor,
+            fontWeight: FontWeight.w600),
       ),
       leading: Icon(
         Icons.arrow_back_ios,
@@ -396,7 +388,6 @@ class RoundedRectangleWithText extends StatelessWidget {
     this.color,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -420,7 +411,6 @@ class RoundedRectangleWithText extends StatelessWidget {
   }
 }
 
-
 class ProductSizeColumn extends StatelessWidget {
   const ProductSizeColumn({
     Key? key,
@@ -440,19 +430,62 @@ class ProductSizeColumn extends StatelessWidget {
           textAlign: TextAlign.end,
         ),
         CustomSizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.only(left: 26),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RoundedRectangleWithText(text: "50 مل (250 SAR)",color: AppColor.greenColor,),
-              CustomSizedBox(width: screenWidth*0.06),
-              RoundedRectangleWithText(text: "100 مل (500 SAR)",color: AppColor.detailsColor,),
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RoundedRectangleWithText(
+              text: "50 مل (250 SAR)",
+              color: AppColor.greenColor,
+            ),
+            CustomSizedBox(width: screenWidth * 0.06),
+            RoundedRectangleWithText(
+              text: "100 مل (500 SAR)",
+              color: AppColor.detailsColor,
+            ),
+          ],
         )
       ],
     );
   }
 }
 
+class AlsoSoldWithItRow extends StatelessWidget {
+  Function? leftTap;
+  Function? rightTap;
+  AlsoSoldWithItRow({Key? key, this.leftTap, this.rightTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomIconButton(
+              icon: Icons.arrow_forward_ios,
+              iconSize: 16,
+              iconColor: AppColor.darkGreyColor,
+              onTap: rightTap,
+            ),
+            CustomIconButton(
+              icon: Icons.arrow_back_ios,
+              iconSize: 16,
+              iconColor: AppColor.darkGreyColor,
+              onTap: leftTap,
+            ),
+          ],
+        ),
+        CustomText(
+          text: "يباع معها أيضًا",
+          fontSize: 16,
+          textColor: AppColor.blackColor,
+          fontWeight: FontWeight.w600,
+          textDirection: TextDirection.rtl,
+          textAlign: TextAlign.end,
+        ),
+      ],
+    );
+  }
+}

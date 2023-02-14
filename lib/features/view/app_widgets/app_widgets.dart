@@ -30,18 +30,47 @@ PreferredSizeWidget simpleAppBar({String? title, Function? onTap}) {
       style: TextStyle(
           color: AppColor.blackColor,
           fontSize: 18,
-          fontWeight: FontWeight.w500),
+          fontWeight: FontWeight.w600),
     ),
     actions: [
-      IconButton(
-          onPressed: () => onTap,
-          icon: Icon(
-            Icons.arrow_forward,
-            color: AppColor.blackColor,
-            size: 16,
-          )),
+      CustomIconButton(
+        icon: Icons.arrow_back,
+        iconColor: AppColor.blackColor,
+        iconSize: 22,
+        iconPadding: 20,
+      ),
     ],
   );
+}
+
+class CustomIconButton extends StatelessWidget {
+  Function? onTap;
+  IconData? icon;
+  Color? iconColor;
+  double? iconSize;
+  double? iconPadding;
+  CustomIconButton(
+      {Key? key,
+      this.onTap,
+      this.icon,
+      this.iconColor,
+      this.iconSize,
+      this.iconPadding})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        padding: EdgeInsets.all(iconPadding ?? 0),
+        onPressed: () => onTap,
+        icon: Icon(icon!,
+            color: iconColor, size: iconSize, textDirection: TextDirection.rtl),
+        splashRadius: 15,
+        iconSize: 20,
+        splashColor: AppColor.greenColor.withOpacity(0.5),
+        alignment: Alignment.center,
+        constraints: const BoxConstraints(minWidth: 10));
+  }
 }
 
 class CustomText extends StatelessWidget {
@@ -54,7 +83,7 @@ class CustomText extends StatelessWidget {
   TextDirection? textDirection;
   CustomText(
       {Key? key,
-      this.text,
+      this.text="",
       this.textColor,
       this.fontSize,
       this.fontWeight,
@@ -66,10 +95,10 @@ class CustomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      text!,
+      text??"",
       style: TextStyle(
           color: textColor, fontSize: fontSize, fontWeight: fontWeight),
-      overflow: textOverflow,
+      overflow: textOverflow ?? TextOverflow.ellipsis,
       textAlign: textAlign,
       textDirection: textDirection ?? TextDirection.ltr,
     );

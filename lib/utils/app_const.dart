@@ -6,4 +6,6 @@ class AppConst {
     AppMedia.parfum1,
     AppMedia.parfum1,
   ];
+  static double screenWidth=375;
+  static double screenHeight=900;
 }
