@@ -83,7 +83,7 @@ class CustomText extends StatelessWidget {
   TextDirection? textDirection;
   CustomText(
       {Key? key,
-      this.text="",
+      this.text = "",
       this.textColor,
       this.fontSize,
       this.fontWeight,
@@ -95,12 +95,33 @@ class CustomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      text??"",
+      text ?? "",
       style: TextStyle(
           color: textColor, fontSize: fontSize, fontWeight: fontWeight),
       overflow: textOverflow ?? TextOverflow.ellipsis,
       textAlign: textAlign,
       textDirection: textDirection ?? TextDirection.ltr,
+    );
+  }
+}
+
+class CustomBackGroundContainer extends StatelessWidget {
+  late double? height;
+  late Widget? child;
+  CustomBackGroundContainer({
+    Key? key,this.height,this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: AppColor.greyColor,
+      ),
+      child: child,
     );
   }
 }

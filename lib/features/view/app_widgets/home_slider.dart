@@ -25,7 +25,7 @@ class _HomeSliderState extends State<HomeSlider> {
   final _pageController = PageController(viewportFraction: 0.8, keepPage: true);
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 300,
       child: Stack(

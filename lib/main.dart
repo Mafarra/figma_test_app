@@ -1,4 +1,3 @@
-import 'package:figma_test_app/utils/app_const.dart';
 import 'package:flutter/material.dart';
 
 import 'features/view/views/home/home_Screen.dart';

@@ -3,6 +3,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_media.dart';
 import '../../app_widgets/app_widgets.dart';
@@ -449,11 +450,18 @@ class ProductSizeColumn extends StatelessWidget {
   }
 }
 
-class AlsoSoldWithItRow extends StatelessWidget {
-  Function? leftTap;
-  Function? rightTap;
-  AlsoSoldWithItRow({Key? key, this.leftTap, this.rightTap}) : super(key: key);
+class AlsoSoldWithItRow extends StatefulWidget {
+  final AutoScrollController controller;
+  const AlsoSoldWithItRow({
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
 
+  @override
+  State<AlsoSoldWithItRow> createState() => _AlsoSoldWithItRowState();
+}
+
+class _AlsoSoldWithItRowState extends State<AlsoSoldWithItRow> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -467,13 +475,13 @@ class AlsoSoldWithItRow extends StatelessWidget {
               icon: Icons.arrow_forward_ios,
               iconSize: 16,
               iconColor: AppColor.darkGreyColor,
-              onTap: rightTap,
+              onTap: _rightTapFunction,
             ),
             CustomIconButton(
               icon: Icons.arrow_back_ios,
               iconSize: 16,
               iconColor: AppColor.darkGreyColor,
-              onTap: leftTap,
+              onTap: _leftTapFunction,
             ),
           ],
         ),
@@ -487,5 +495,82 @@ class AlsoSoldWithItRow extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _leftTapFunction() {
+    //ToDo:
+  }
+
+  void _rightTapFunction() {
+    //ToDo:
+  }
+}
+
+
+class CustomTextButonWithIcon extends StatelessWidget {
+  late double? width;
+  late IconData? icon;
+  late String? text;
+  late Color? backGroundColor;
+  late Color? iconColor;
+  late Color? textColor;
+  late bool? isLeftIcon = true;
+
+  CustomTextButonWithIcon(
+      {Key? key,
+      this.text,
+      this.width,
+      this.icon,
+      this.backGroundColor,
+      this.iconColor,
+      this.textColor,
+      required this.isLeftIcon})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: width,
+        child: TextButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(backGroundColor),
+                padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(horizontal: 10)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: AppColor.greenColor)))),
+            onPressed: () {},
+            child: isLeftIcon!
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(
+                        icon!,
+                        color: iconColor,
+                      ),
+                      CustomText(
+                        text: text,
+                        textColor: textColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CustomText(
+                        text: text,
+                        textColor: textColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                      Icon(
+                        icon!,
+                        color: iconColor,
+                      ),
+                    ],
+                  )));
   }
 }
