@@ -16,18 +16,39 @@ class _HomeSliderState extends State<HomeSlider> {
   Icon selectedlikeIcon = Icon(
     Icons.favorite,
     color: AppColor.redColor,
+    size: 22,
   );
   Icon disabledlikeIcon = Icon(
     Icons.favorite_border,
     color: AppColor.redColor,
+    size: 22,
   );
+  Icon shareIcon = Icon(
+    Icons.share_outlined,
+    color: AppColor.blackColor,
+  );
+  Icon repeatIcon = Icon(
+    Icons.repeat,
+    color: AppColor.goldColor,
+  );
+
   bool isSelected = false;
-  final _pageController = PageController(viewportFraction: 0.8, keepPage: true);
+  double screenWidth = AppConst.screenWidth;
+  double screenPad = 16.0; //
+  PageController? _pageController;
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+        viewportFraction: 1 + (screenPad * 2 / screenWidth),
+        keepPage: true,
+        initialPage: 0);
+  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 300,
+      height: 310,
       child: Stack(
         children: <Widget>[
           PageView.builder(
@@ -38,80 +59,11 @@ class _HomeSliderState extends State<HomeSlider> {
             itemBuilder: (context, index) {
               return Stack(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                    ),
-                    width: double.infinity,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(40)),
-                      child: Image.asset(
-                        widget.imageAsset[index],
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 300,
-                      ),
-                    ),
+                  PageViewContainer(
+                    widget: widget,
+                    index: index,
                   ),
-                  Positioned(
-                    top: 80.07,
-                    left: 18.33,
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: AppColor.whiteColor,
-                          radius: 20,
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.5),
-                            child: IconButton(
-                              icon: isSelected
-                                  ? selectedlikeIcon
-                                  : disabledlikeIcon,
-                              onPressed: () {
-                                setState(() {
-                                  isSelected = !isSelected;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CircleAvatar(
-                          backgroundColor: AppColor.whiteColor,
-                          radius: 20,
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.5),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.repeat,
-                                color: AppColor.goldColor,
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CircleAvatar(
-                          backgroundColor: AppColor.whiteColor,
-                          radius: 20,
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.5),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.share_outlined,
-                                color: AppColor.blackColor,
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                  _posittiondIcons(),
                 ],
               );
             },
@@ -123,10 +75,10 @@ class _HomeSliderState extends State<HomeSlider> {
                 vertical: 20,
               ),
               child: SmoothPageIndicator(
-                controller: _pageController,
+                controller: _pageController!,
                 count: widget.imageAsset.length,
                 onDotClicked: (index) {
-                  _pageController.jumpToPage(index);
+                  _pageController!.jumpToPage(index);
                   setState(() {});
                 },
                 effect: ExpandingDotsEffect(
@@ -143,6 +95,81 @@ class _HomeSliderState extends State<HomeSlider> {
             ),
           ),
         ],
+      ),
+    );
+  }
+  Positioned _posittiondIcons() {
+    return Positioned(
+      top: 70.07,
+      left: 28.33,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircleAvatar(
+            backgroundColor: AppColor.whiteColor,
+            radius: 18,
+            child: IconButton(
+              padding: const EdgeInsets.all(0.1),
+              icon: isSelected ? selectedlikeIcon : disabledlikeIcon,
+              onPressed: () {
+                setState(() {
+                  isSelected = !isSelected;
+                });
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          customCircleAvatarWithIcon(icon: repeatIcon, raduis: 19),
+          const SizedBox(
+            height: 20,
+          ),
+          customCircleAvatarWithIcon(icon: shareIcon, raduis: 19),
+        ],
+      ),
+    );
+  }
+
+  CircleAvatar customCircleAvatarWithIcon(
+      {double? raduis, Color? iconColor, Icon? icon}) {
+    return CircleAvatar(
+      backgroundColor: AppColor.whiteColor,
+      radius: raduis,
+      child: IconButton(
+        iconSize: 18,
+        padding: const EdgeInsets.all(0.1),
+        icon: icon!,
+        onPressed: () {},
+      ),
+    );
+  }
+}
+
+class PageViewContainer extends StatelessWidget {
+  const PageViewContainer({
+    Key? key,
+    required this.widget,
+    required this.index,
+  }) : super(key: key);
+
+  final HomeSlider widget;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      width: double.infinity,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(50)),
+        child: Image.asset(
+          widget.imageAsset[index],
+          fit: BoxFit.fill,
+          width: double.infinity,
+          height: 350,
+        ),
       ),
     );
   }

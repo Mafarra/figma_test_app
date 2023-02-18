@@ -3,8 +3,8 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 import '../../../../utils/app_colors.dart';
+import '../../../../utils/app_const.dart';
 import '../../../../utils/app_media.dart';
 import '../../app_widgets/app_widgets.dart';
 
@@ -412,10 +412,17 @@ class RoundedRectangleWithText extends StatelessWidget {
   }
 }
 
-class ProductSizeColumn extends StatelessWidget {
-  const ProductSizeColumn({
-    Key? key,
+class ProductSizeColumn extends StatefulWidget {
+  bool? isClicked = false;
+   ProductSizeColumn({
+    Key? key,required this.isClicked,
   }) : super(key: key);
+
+  @override
+  State<ProductSizeColumn> createState() => _ProductSizeColumnState();
+}
+
+class _ProductSizeColumnState extends State<ProductSizeColumn> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -434,14 +441,34 @@ class ProductSizeColumn extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            RoundedRectangleWithText(
-              text: "50 مل (250 SAR)",
-              color: AppColor.greenColor,
+            InkWell(
+              onTap: (){ 
+                widget.isClicked = !widget.isClicked!;
+                setState(() {
+                  
+                });
+              },
+              child: RoundedRectangleWithText(
+                text: "50 مل (250 SAR)",
+                color: widget.isClicked == true
+                    ? AppColor.greenColor
+                    : AppColor.detailsColor,
+              ),
             ),
             CustomSizedBox(width: screenWidth * 0.06),
-            RoundedRectangleWithText(
-              text: "100 مل (500 SAR)",
-              color: AppColor.detailsColor,
+            InkWell(
+              onTap: () {
+                widget.isClicked = !widget.isClicked!;
+                setState(() {
+                  
+                });
+              },
+              child: RoundedRectangleWithText(
+                text: "100 مل (500 SAR)",
+                color: widget.isClicked == false
+                    ? AppColor. greenColor
+                    : AppColor.detailsColor,
+              ),
             ),
           ],
         )
@@ -450,18 +477,11 @@ class ProductSizeColumn extends StatelessWidget {
   }
 }
 
-class AlsoSoldWithItRow extends StatefulWidget {
-  final AutoScrollController controller;
+class AlsoSoldWithItRow extends StatelessWidget {
   const AlsoSoldWithItRow({
-    required this.controller,
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<AlsoSoldWithItRow> createState() => _AlsoSoldWithItRowState();
-}
-
-class _AlsoSoldWithItRowState extends State<AlsoSoldWithItRow> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -475,13 +495,13 @@ class _AlsoSoldWithItRowState extends State<AlsoSoldWithItRow> {
               icon: Icons.arrow_forward_ios,
               iconSize: 16,
               iconColor: AppColor.darkGreyColor,
-              onTap: _rightTapFunction,
+              onTap: (){},
             ),
             CustomIconButton(
               icon: Icons.arrow_back_ios,
               iconSize: 16,
               iconColor: AppColor.darkGreyColor,
-              onTap: _leftTapFunction,
+              onTap: (){},
             ),
           ],
         ),
@@ -496,16 +516,7 @@ class _AlsoSoldWithItRowState extends State<AlsoSoldWithItRow> {
       ],
     );
   }
-
-  void _leftTapFunction() {
-    //ToDo:
-  }
-
-  void _rightTapFunction() {
-    //ToDo:
-  }
 }
-
 
 class CustomTextButonWithIcon extends StatelessWidget {
   late double? width;
@@ -543,34 +554,258 @@ class CustomTextButonWithIcon extends StatelessWidget {
             onPressed: () {},
             child: isLeftIcon!
                 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         icon!,
                         color: iconColor,
                       ),
+                      CustomSizedBox(width: 2,),
                       CustomText(
                         text: text,
                         textColor: textColor,
                         fontWeight: FontWeight.w500,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                     ],
                   )
                 : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomText(
                         text: text,
                         textColor: textColor,
                         fontWeight: FontWeight.w500,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
+                      CustomSizedBox(width: 5,),
                       Icon(
                         icon!,
                         color: iconColor,
                       ),
                     ],
                   )));
+  }
+}
+
+class RecomendedProducts extends StatelessWidget {
+  const RecomendedProducts({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: AppConst.screenWidth / 2.5,
+          height: AppConst.screenHeight * 0.31,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppColor.greenColor, width: .5),
+          ),
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: AppConst.screenWidth / 2.6,
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                      fit: BoxFit.cover, image: AssetImage(AppMedia.parfum2)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              CustomSizedBox(
+                height: 7,
+              ),
+              CustomText(
+                text: "عطر رجالي ",
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+              CustomSizedBox(
+                height: 10,
+              ),
+              CustomText(
+                text: "2500 ر.س",
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                textDirection: TextDirection.rtl,
+              ),
+              CustomSizedBox(
+                height: 6,
+              ),
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: TextButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColor.whiteColor),
+                      padding: MaterialStateProperty.all(
+                          const EdgeInsets.symmetric(horizontal: 10)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(color: AppColor.greenColor)))),
+                  onPressed: () {},
+                  child: CustomText(
+                    text: "إضافة للسلة",
+                    textColor: AppColor.greenColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 10,
+          right: 10,
+          child: CircleAvatar(
+            radius: 20,
+            backgroundColor: AppColor.whiteColor,
+            child: IconButton(
+              icon: const Icon(
+                Icons.favorite_border,
+              ),
+              color: AppColor.redColor,
+              onPressed: () {},
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class StoreAdvertCard extends StatelessWidget {
+  const StoreAdvertCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomBackGroundContainer(
+      height: 190,
+      child: Padding(
+        padding:
+            const EdgeInsets.only(right: 20, top: 20, left: 12, bottom: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.arrow_circle_left_outlined,
+                          color: AppColor.blackColor,
+                        )),
+                    CustomSizedBox(
+                      width: 15,
+                    ),
+                    ImageIcon(
+                      const AssetImage(AppMedia.comment),
+                      size: 20,
+                      color: AppColor.greenColor,
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    CustomText(
+                      text: "متجر شانيل",
+                      textColor: AppColor.blackColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                    CustomSizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: const DecorationImage(
+                            image: AssetImage(AppMedia.crown),
+                            fit: BoxFit.contain,
+                            scale: 1),
+                      ),
+                    ),
+                    CustomSizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      width: 30,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: const DecorationImage(
+                            image: AssetImage(AppMedia.channel),
+                            fit: BoxFit.contain,
+                            scale: 1),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            CustomText(
+              text: "متجر عطور وتجميل",
+            ),
+            CustomSizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CustomText(
+                  text: "الدمام",
+                  textDirection: TextDirection.rtl,
+                ),
+                CustomSizedBox(
+                  width: 5,
+                ),
+                Icon(
+                  Icons.place_outlined,
+                  color: AppColor.greenColor,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CustomTextButonWithIcon(
+                  isLeftIcon: false,
+                  width: AppConst.screenWidth / 3.5,
+                  backGroundColor: AppColor.whiteColor,
+                  text: "متابعة",
+                  icon: Icons.person_add_alt,
+                  textColor: AppColor.greenColor,
+                  iconColor: AppColor.greenColor,
+                ),
+                CustomSizedBox(
+                  width: 10,
+                ),
+                CustomTextButonWithIcon(
+                  isLeftIcon: true,
+                  width: AppConst.screenWidth / 3.5,
+                  backGroundColor: AppColor.greenColor,
+                  text: "زيارة المتجر",
+                  icon: Icons.arrow_back,
+                  textColor: AppColor.whiteColor,
+                  iconColor: AppColor.whiteColor,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
