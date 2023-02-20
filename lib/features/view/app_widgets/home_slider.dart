@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeSlider extends StatefulWidget {
-  final List<String> imageAsset = AppConst.imageAsset;
-
   const HomeSlider({super.key});
   @override
   // ignore: library_private_types_in_public_api
@@ -44,6 +42,7 @@ class _HomeSliderState extends State<HomeSlider> {
         keepPage: true,
         initialPage: 0);
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -55,12 +54,11 @@ class _HomeSliderState extends State<HomeSlider> {
             physics: const BouncingScrollPhysics(),
             controller: _pageController,
             scrollDirection: Axis.horizontal,
-            itemCount: widget.imageAsset.length,
+            itemCount: AppConst.imageAsset.length,
             itemBuilder: (context, index) {
               return Stack(
                 children: [
                   PageViewContainer(
-                    widget: widget,
                     index: index,
                   ),
                   _posittiondIcons(),
@@ -76,7 +74,7 @@ class _HomeSliderState extends State<HomeSlider> {
               ),
               child: SmoothPageIndicator(
                 controller: _pageController!,
-                count: widget.imageAsset.length,
+                count: AppConst.imageAsset.length,
                 onDotClicked: (index) {
                   _pageController!.jumpToPage(index);
                   setState(() {});
@@ -98,6 +96,7 @@ class _HomeSliderState extends State<HomeSlider> {
       ),
     );
   }
+
   Positioned _posittiondIcons() {
     return Positioned(
       top: 70.07,
@@ -150,25 +149,25 @@ class _HomeSliderState extends State<HomeSlider> {
 class PageViewContainer extends StatelessWidget {
   const PageViewContainer({
     Key? key,
-    required this.widget,
     required this.index,
+    this.width,this.height
   }) : super(key: key);
 
-  final HomeSlider widget;
   final int index;
-
+  final double? width;
+  final double? height;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      width: double.infinity,
+      width: width?? double.infinity,
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(50)),
         child: Image.asset(
-          widget.imageAsset[index],
+          AppConst.imageAsset[index],
           fit: BoxFit.fill,
-          width: double.infinity,
-          height: 350,
+          width: width?? double.infinity,
+          height: height?? 350,
         ),
       ),
     );

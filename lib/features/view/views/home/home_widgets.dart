@@ -2,11 +2,13 @@
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_const.dart';
 import '../../../../utils/app_media.dart';
 import '../../app_widgets/app_widgets.dart';
+import '../../app_widgets/home_slider.dart';
 
 Widget buildPanel(BuildContext context) {
   return Directionality(
@@ -180,13 +182,13 @@ class EpandedContainer extends StatelessWidget {
             height: 10,
           ),
           const PriceDetailsRow(),
-          const CustomDivider(),
+          CustomDivider(),
           const PriceDetailsRow(),
-          const CustomDivider(),
+          CustomDivider(),
           const PriceDetailsRow(),
-          const CustomDivider(),
+          CustomDivider(),
           const PriceDetailsRow(),
-          const CustomDivider(),
+          CustomDivider(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -242,14 +244,12 @@ class PriceScheduleHeadRow extends StatelessWidget {
 }
 
 class CustomDivider extends StatelessWidget {
-  const CustomDivider({
-    Key? key,
-  }) : super(key: key);
-
+  CustomDivider({Key? key, this.lineColor}) : super(key: key);
+  Color? lineColor = Colors.white;
   @override
   Widget build(BuildContext context) {
     return Divider(
-      color: AppColor.darkGreyColor,
+      color: lineColor ?? AppColor.darkGreyColor,
       thickness: 1,
     );
   }
@@ -340,17 +340,25 @@ class MyClipper extends CustomClipper<Path> {
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
 }
 
-class HomeScreenListTile extends StatelessWidget {
+class HomeScreenListTile extends StatefulWidget {
   Function? onTap;
   String? title;
   HomeScreenListTile({Key? key, this.onTap, this.title}) : super(key: key);
 
   @override
+  State<HomeScreenListTile> createState() => _HomeScreenListTileState();
+}
+
+class _HomeScreenListTileState extends State<HomeScreenListTile> {
+  @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => onTap,
+      onTap: () {
+        widget.onTap!();
+        setState(() {});
+      },
       title: Text(
-        title ?? "",
+        widget.title ?? "",
         textDirection: TextDirection.rtl,
         style: TextStyle(
             fontSize: 16,
@@ -414,8 +422,9 @@ class RoundedRectangleWithText extends StatelessWidget {
 
 class ProductSizeColumn extends StatefulWidget {
   bool? isClicked = false;
-   ProductSizeColumn({
-    Key? key,required this.isClicked,
+  ProductSizeColumn({
+    Key? key,
+    required this.isClicked,
   }) : super(key: key);
 
   @override
@@ -442,11 +451,9 @@ class _ProductSizeColumnState extends State<ProductSizeColumn> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             InkWell(
-              onTap: (){ 
+              onTap: () {
                 widget.isClicked = !widget.isClicked!;
-                setState(() {
-                  
-                });
+                setState(() {});
               },
               child: RoundedRectangleWithText(
                 text: "50 مل (250 SAR)",
@@ -459,14 +466,12 @@ class _ProductSizeColumnState extends State<ProductSizeColumn> {
             InkWell(
               onTap: () {
                 widget.isClicked = !widget.isClicked!;
-                setState(() {
-                  
-                });
+                setState(() {});
               },
               child: RoundedRectangleWithText(
                 text: "100 مل (500 SAR)",
                 color: widget.isClicked == false
-                    ? AppColor. greenColor
+                    ? AppColor.greenColor
                     : AppColor.detailsColor,
               ),
             ),
@@ -495,13 +500,13 @@ class AlsoSoldWithItRow extends StatelessWidget {
               icon: Icons.arrow_forward_ios,
               iconSize: 16,
               iconColor: AppColor.darkGreyColor,
-              onTap: (){},
+              onTap: () {},
             ),
             CustomIconButton(
               icon: Icons.arrow_back_ios,
               iconSize: 16,
               iconColor: AppColor.darkGreyColor,
-              onTap: (){},
+              onTap: () {},
             ),
           ],
         ),
@@ -560,7 +565,9 @@ class CustomTextButonWithIcon extends StatelessWidget {
                         icon!,
                         color: iconColor,
                       ),
-                      CustomSizedBox(width: 2,),
+                      CustomSizedBox(
+                        width: 2,
+                      ),
                       CustomText(
                         text: text,
                         textColor: textColor,
@@ -578,7 +585,9 @@ class CustomTextButonWithIcon extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
                       ),
-                      CustomSizedBox(width: 5,),
+                      CustomSizedBox(
+                        width: 5,
+                      ),
                       Icon(
                         icon!,
                         color: iconColor,
@@ -806,6 +815,686 @@ class StoreAdvertCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+displayDetailsBottomSheet(BuildContext context) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          height: AppConst.screenHeight / 1.5,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40.0),
+              topRight: Radius.circular(40.0),
+            ),
+          ),
+          child: ListView(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(),
+                  CustomText(
+                    text: 'التفاصيل',
+                    textColor: AppColor.blackColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  CustomIconButton(
+                    icon: Icons.close,
+                    iconColor: AppColor.blackColor,
+                    iconSize: 22,
+                    onTap: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              CustomText(
+                text:
+                    '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu in at sit sed tristique. Massa cursus pellentesque laoreet dignissim lacus etiam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. mauris.''',
+                textAlign: TextAlign.right,
+                fontSize: 16,
+                textColor: AppColor.detailsColor,
+              ),
+              const PageViewContainer(
+                index: 1,
+              ),
+              const PageViewContainer(
+                index: 1,
+              ),
+              const PageViewContainer(
+                index: 1,
+              ),
+            ],
+          ),
+        );
+      });
+}
+
+displayProparatiesBottomSheet(BuildContext context) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(30),
+          height: AppConst.screenHeight / 1.3,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40.0),
+              topRight: Radius.circular(40.0),
+            ),
+          ),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(),
+                  CustomText(
+                    text: 'الخصائص',
+                    textColor: AppColor.blackColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  CustomIconButton(
+                    icon: Icons.close,
+                    iconColor: AppColor.blackColor,
+                    iconSize: 22,
+                    onTap: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return _buildProparatiesContainer(index);
+                  },
+                  itemCount: 10,
+                ),
+              ),
+            ],
+          ),
+        );
+      });
+}
+_buildProparatiesContainer(int index) {
+  return Container(
+    width: double.infinity,
+    height: 50,
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    color: index.isEven ? AppColor.whiteBlueColor : AppColor.whiteColor,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CustomText(
+          text: "White Musk, Cashmeran, Cedar",
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          textColor: AppColor.darkGreyColor,
+        ),
+        CustomText(
+          text: "نفحات قاعدية",
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          textColor: AppColor.darkGreyColor,
+        ),
+      ],
+    ),
+  );
+}
+
+displayEvaluationBottomSheet(BuildContext context) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(30),
+          height: AppConst.screenHeight / 1.2,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40.0),
+              topRight: Radius.circular(40.0),
+            ),
+          ),
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      displayAddNewRateBottomShete(context);
+                    },
+                    child: CustomText(
+                      text: 'إضافة تقييم',
+                      textColor: AppColor.greenColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  CustomText(
+                    text: 'الخصائص',
+                    textColor: AppColor.blackColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  CustomIconButton(
+                    icon: Icons.close,
+                    iconColor: AppColor.blackColor,
+                    iconSize: 22,
+                    onTap: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              CustomBackGroundContainer(
+                height: 140,
+                child: FittedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      SizedBox(
+                        width: 23,
+                      ),
+                      FittedBox(child: LeftRatingColumn()),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      FittedBox(child: RightRatingColumn()),
+                      SizedBox(
+                        width: 23,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              CustomRatingBarStars(
+                initRating: 5,
+                itemSize: 10,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomDetailsText(
+                fontSize: 14,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  RartingPicContainer(),
+                  RartingPicContainer(),
+                  RartingPicContainer(),
+                ],
+              ),
+              const UserCommentInfoRow(),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomDivider(
+                lineColor: AppColor.whiteGreyColor,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomRatingBarStars(
+                initRating: 5,
+                itemSize: 10,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomDetailsText(
+                fontSize: 14,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const UserCommentInfoRow(),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CustomText(
+                    text: "متجر شانيل",
+                    textColor: AppColor.blackColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                  CustomSizedBox(
+                    width: 8,
+                  ),
+                  Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      image: const DecorationImage(
+                          image: AssetImage(AppMedia.crown),
+                          fit: BoxFit.contain,
+                          scale: 1),
+                    ),
+                  ),
+                  CustomSizedBox(
+                    width: 30,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 50.0, top: 10),
+                child: CustomDetailsText(
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        );
+      });
+}
+
+displayAddNewRateBottomShete(BuildContext context) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(30),
+          height: AppConst.screenHeight / 1.3,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40.0),
+              topRight: Radius.circular(40.0),
+            ),
+          ),
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(),
+                  CustomText(
+                    text: 'إضافة تقييم',
+                    textColor: AppColor.blackColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  CustomIconButton(
+                    icon: Icons.close,
+                    iconColor: AppColor.blackColor,
+                    iconSize: 22,
+                    onTap: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CustomRatingBarStars(
+                    initRating: 0,
+                    itemSize: 30,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  CustomText(
+                    text: "تقييمك",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    textColor: AppColor.headLineColor,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              TextField(
+                maxLines: 10,
+                minLines: 8,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide:
+                            BorderSide(color: AppColor.whiteGreyColor))),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomText(
+                text: "إضافة صورة",
+                textColor: AppColor.headLineColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                textDirection: TextDirection.rtl,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                      margin:
+                          const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: AppColor.whiteGreyColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.add_photo_alternate_outlined,
+                          color: Colors.white,
+                        ),
+                      )),
+                  RartingPicContainer(
+                    width: 80,
+                    height: 80,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CustomText(
+                    text: "هل تريد إخفاء هويتك",
+                    textColor: AppColor.detailsColor,
+                    fontSize: 14,
+                  ),
+                  Checkbox(
+                    visualDensity:
+                        const VisualDensity(horizontal: -4, vertical: -4),
+                    value: true,
+                    onChanged: (value) {},
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    checkColor: AppColor.whiteColor,
+                    activeColor: AppColor.greenColor,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SizedBox(
+                width: AppConst.screenWidth / 1.2,
+                height: 50,
+                child: TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColor.greenColor),
+                        shape: MaterialStateProperty
+                            .all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: BorderSide(color: AppColor.greenColor)))),
+                    onPressed: () {},
+                    child: CustomText(
+                      text: "إرسال تعليق",
+                      textColor: AppColor.whiteColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    )),
+              ),
+            ],
+          ),
+        );
+      });
+}
+
+class UserCommentInfoRow extends StatelessWidget {
+  const UserCommentInfoRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        CustomText(
+          text: "4, أبريل , 2022",
+          fontSize: 10,
+          textColor: AppColor.detailsColor,
+          fontWeight: FontWeight.w500,
+          textDirection: TextDirection.rtl,
+        ),
+        CustomSizedBox(
+          width: 5,
+        ),
+        CustomText(
+          text: "أحمد ",
+          fontSize: 16,
+          textColor: AppColor.blackColor,
+          fontWeight: FontWeight.w500,
+        ),
+        CustomSizedBox(
+          width: 5,
+        ),
+        const CircleAvatar(
+          radius: 15,
+          foregroundImage: AssetImage(AppMedia.parfum3),
+        ),
+      ],
+    );
+  }
+}
+
+class RartingPicContainer extends StatelessWidget {
+  late double? width;
+  late double? height;
+  RartingPicContainer({Key? key, this.width, this.height}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+      width: width ?? 40,
+      height: height ?? 40,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Image.asset(
+        AppConst.imageAsset[3],
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+}
+
+class RightRatingColumn extends StatelessWidget {
+  const RightRatingColumn({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CustomText(
+          text: "4.0",
+          fontSize: 24,
+          textColor: AppColor.darkGreyColor,
+          fontWeight: FontWeight.w500,
+        ),
+        CustomRatingBarStars(
+          itemSize: 25,
+          initRating: 4,
+        ),
+        CustomText(
+          text: "5 تقييمات",
+          fontSize: 16,
+          textColor: AppColor.detailsColor,
+          fontWeight: FontWeight.w400,
+          textDirection: TextDirection.rtl,
+        ),
+      ],
+    );
+  }
+}
+
+class LeftRatingColumn extends StatelessWidget {
+  const LeftRatingColumn({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        RatingRow(),
+        SizedBox(
+          height: 5,
+        ),
+        RatingRow(),
+        SizedBox(
+          height: 5,
+        ),
+        RatingRow(),
+        SizedBox(
+          height: 5,
+        ),
+        RatingRow(),
+        SizedBox(
+          height: 5,
+        ),
+        RatingRow(),
+      ],
+    );
+  }
+}
+
+class CustomRatingBarStars extends StatelessWidget {
+  double itemSize;
+  double initRating;
+  CustomRatingBarStars({
+    required this.itemSize,
+    required this.initRating,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RatingBar(
+        wrapAlignment: WrapAlignment.start,
+        allowHalfRating: false,
+        ignoreGestures: true,
+        itemSize: itemSize,
+        textDirection: TextDirection.rtl,
+        minRating: 1,
+        maxRating: 5,
+        initialRating: initRating,
+        ratingWidget: RatingWidget(
+          full: Icon(
+            Icons.star_rounded,
+            color: AppColor.goldColor,
+          ),
+          half: Icon(
+            Icons.star_half,
+            color: AppColor.goldColor,
+          ),
+          empty: Icon(
+            Icons.star_border_rounded,
+            color: AppColor.goldColor,
+          ),
+        ),
+        onRatingUpdate: (rate) {});
+  }
+}
+
+class RatingRow extends StatelessWidget {
+  const RatingRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CustomText(
+          text: "12",
+          textColor: AppColor.detailsColor,
+          fontSize: 10,
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        Directionality(
+          textDirection: TextDirection.rtl,
+          child: SizedBox(
+            width: 60,
+            child: LinearProgressIndicator(
+              backgroundColor: AppColor.progressBackGround,
+              color: AppColor.whiteblackColor,
+              minHeight: 5,
+              value: 0.5,
+              // valueColor: ,
+            ),
+          ),
+        ),
+        const SizedBox(width: 5),
+        CustomRatingBarStars(
+          itemSize: 10,
+          initRating: 5,
+        ),
+      ],
+    );
+  }
+}
+
+class CustomDetailsText extends StatelessWidget {
+  double? fontSize;
+  CustomDetailsText({
+    Key? key,
+    this.fontSize,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "Lorem ipsum dolor sit amet, ipiscingisl amet orci ipsum dis lectus hac mauris.",
+      style: TextStyle(color: AppColor.headLineColor, fontSize: fontSize ?? 16),
+      textAlign: TextAlign.end,
     );
   }
 }

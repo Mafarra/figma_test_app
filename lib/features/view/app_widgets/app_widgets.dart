@@ -38,6 +38,7 @@ PreferredSizeWidget simpleAppBar({String? title, Function? onTap}) {
         iconColor: AppColor.blackColor,
         iconSize: 22,
         iconPadding: 20,
+        onTap: () {},
       ),
     ],
   );
@@ -51,7 +52,7 @@ class CustomIconButton extends StatelessWidget {
   double? iconPadding;
   CustomIconButton(
       {Key? key,
-      this.onTap,
+      required this.onTap,
       this.icon,
       this.iconColor,
       this.iconSize,
@@ -62,7 +63,7 @@ class CustomIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
         padding: EdgeInsets.all(iconPadding ?? 0),
-        onPressed: () => onTap,
+        onPressed: () => onTap!() ?? () {},
         icon: Icon(icon!,
             color: iconColor, size: iconSize, textDirection: TextDirection.rtl),
         splashRadius: 15,
@@ -101,6 +102,7 @@ class CustomText extends StatelessWidget {
       overflow: textOverflow ?? TextOverflow.ellipsis,
       textAlign: textAlign,
       textDirection: textDirection ?? TextDirection.ltr,
+      maxLines: 5,
     );
   }
 }
@@ -109,7 +111,9 @@ class CustomBackGroundContainer extends StatelessWidget {
   late double? height;
   late Widget? child;
   CustomBackGroundContainer({
-    Key? key,this.height,this.child,
+    Key? key,
+    this.height,
+    this.child,
   }) : super(key: key);
 
   @override

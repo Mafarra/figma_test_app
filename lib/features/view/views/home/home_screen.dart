@@ -1,7 +1,9 @@
 // ignore_for_file: must_be_immutable
 import 'package:figma_test_app/features/model/product_model.dart';
+import 'package:figma_test_app/features/view_model/cart_view_model.dart';
 import 'package:figma_test_app/utils/app_const.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../utils/app_colors.dart';
 import '../../app_widgets/app_widgets.dart';
 import '../../app_widgets/home_slider.dart';
@@ -27,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     AppConst.screenWidth = MediaQuery.of(context).size.width;
     AppConst.screenHeight = MediaQuery.of(context).size.height;
-    int? index = 1;
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: simpleAppBar(title: 'عطور وتجميل'),
@@ -65,11 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.only(top: 20),
-              child: Text(
-                "Lorem ipsum dolor sit amet, ipiscingisl amet orci ipsum dis lectus hac mauris.",
-                style: TextStyle(color: AppColor.headLineColor, fontSize: 16),
-                textAlign: TextAlign.end,
-              ),
+              child: CustomDetailsText(),
             ),
             CustomSizedBox(
               height: 15,
@@ -78,14 +75,17 @@ class _HomeScreenState extends State<HomeScreen> {
             CustomSizedBox(height: 25),
             HomeScreenListTile(
               title: "التفاصيل",
+              onTap: () => displayDetailsBottomSheet(context),
             ),
             const CustomDividerWithPadding(),
             HomeScreenListTile(
               title: "الخصائص",
+              onTap: () => displayProparatiesBottomSheet(context),
             ),
             const CustomDividerWithPadding(),
             HomeScreenListTile(
               title: "التقييمات",
+              onTap: () =>  displayEvaluationBottomSheet(context),
             ),
             ProductSizeColumn(
               isClicked: isClicked,
@@ -121,10 +121,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 RecomendedProducts(),
               ],
             ),
+            const SizedBox(
+              height: 80,
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionCart(index: index),
+      floatingActionButton: const FloatingActionCart(),
     );
   }
 
@@ -281,59 +284,71 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class FloatingActionCart extends StatelessWidget {
+class FloatingActionCart extends StatefulWidget {
   const FloatingActionCart({
     Key? key,
-    required this.index,
   }) : super(key: key);
 
-  final int? index;
+  @override
+  State<FloatingActionCart> createState() => _FloatingActionCartState();
+}
 
+class _FloatingActionCartState extends State<FloatingActionCart> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Consumer<CartViewModel>(builder: (context, cart, child) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(
-            width: 1,
-          ),
           Container(
               padding: const EdgeInsets.all(1),
-              width: AppConst.screenWidth / 3.5,
-              height: 55,
+              width: AppConst.screenWidth / 3.6,
+              height: 50,
               decoration: BoxDecoration(
                 color: AppColor.whiteColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.add_circle_outline,
-                        color: AppColor.blackColor,
-                      )),
-                  CustomText(
-                    text: "$index",
-                    textAlign: TextAlign.center,
-                    textColor: AppColor.blackColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.remove_circle_outline,
-                        color: AppColor.blackColor,
-                      )),
-                ],
+              child: FittedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                        splashColor: AppColor.greenColor,
+                        splashRadius: 20,
+                        onPressed: () => cart.increaseIndex(),
+                        icon: Icon(
+                          Icons.add_circle_outline,
+                          color: AppColor.blackColor,
+                        )),
+                    FittedBox(
+                      child: CustomText(
+                        text: "${cart.index}",
+                        textAlign: TextAlign.center,
+                        textColor: AppColor.blackColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        textOverflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    IconButton(
+                        splashColor: AppColor.greenColor,
+                        splashRadius: 20,
+                        onPressed: () => cart.decreaseIndex(),
+                        icon: Icon(
+                          Icons.remove_circle_outline,
+                          color: AppColor.blackColor,
+                        )),
+                  ],
+                ),
               )),
+          const SizedBox(
+            width: 15,
+          ),
           SizedBox(
-            width: AppConst.screenWidth / 1.7,
-            height: 55,
+            width: AppConst.screenWidth / 1.8,
+            height: 50,
             child: TextButton(
                 style: ButtonStyle(
                     backgroundColor:
@@ -350,8 +365,11 @@ class FloatingActionCart extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 )),
           ),
+          const SizedBox(
+            width: 10,
+          )
         ],
-      ),
-    );
+      );
+    });
   }
 }
