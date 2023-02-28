@@ -6,7 +6,8 @@ class AppConst {
   static const List<String> imageAsset = [
     AppMedia.parfum1,
     AppMedia.parfum1,
-    AppMedia.parfum2,
+    AppMedia.parfum1,
+    // AppMedia.parfum2,
     AppMedia.parfum4,
   ];
   static List<ProductModel> productsItems = [

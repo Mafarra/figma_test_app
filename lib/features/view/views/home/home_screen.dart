@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, avoid_function_literals_in_foreach_calls
 import 'package:figma_test_app/features/model/product_model.dart';
 import 'package:figma_test_app/features/view_model/cart_view_model.dart';
 import 'package:figma_test_app/utils/app_const.dart';
@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const CustomDividerWithPadding(),
             HomeScreenListTile(
               title: "التقييمات",
-              onTap: () =>  displayEvaluationBottomSheet(context),
+              onTap: () => displayEvaluationBottomSheet(context),
             ),
             ProductSizeColumn(
               isClicked: isClicked,
@@ -134,22 +134,22 @@ class _HomeScreenState extends State<HomeScreen> {
   Container _soldWithListView() {
     return Container(
       width: AppConst.screenWidth / 2,
-      height: AppConst.screenHeight * 0.32,
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 28),
+      height: AppConst.screenHeight >=800?AppConst.screenHeight/3: AppConst.screenHeight/2.5,
+      padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: AppColor.greyColor,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildListView(),
-          CustomSizedBox(
-            height: 10,
-          ),
-          _buildSelectAllButton(),
-        ],
-      ),
+      child: Builder(builder: (context) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildListView(),
+            _buildSelectAllButton(),
+          ],
+        );
+      }),
     );
   }
 
@@ -158,6 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
       width: double.infinity,
       height: 160,
       child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         itemBuilder: (context, index) {
@@ -181,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
       {BuildContext? context, ProductModel? productModel}) {
     return Container(
       width: AppConst.screenWidth * 0.27,
-      height: AppConst.screenHeight * 0.17,
+      height: AppConst.screenHeight * 0.22,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: AppColor.greenColor, width: 1),
@@ -254,32 +255,34 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildSelectAllButton() {
     List<ProductModel>? productsList = AppConst.productsItems;
-    return SizedBox(
-      width: AppConst.screenWidth * 0.8,
-      child: TextButton(
-          style: ButtonStyle(
-              padding: MaterialStateProperty.all(
-                  const EdgeInsets.symmetric(horizontal: 10)),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(color: AppColor.greenColor)))),
-          onPressed: () {
-            productsList[0].isChecked == true
-                ? productsList.forEach((element) {
-                    element.isChecked = false;
-                  })
-                : productsList.forEach((element) {
-                    element.isChecked = true;
-                  });
-            setState(() {});
-          },
-          child: CustomText(
-            text: "تحديد الكل",
-            textColor: AppColor.greenColor,
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          )),
+    return FittedBox(
+      child: SizedBox(
+        width: AppConst.screenWidth * 0.8,
+        child: TextButton(
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(horizontal: 10)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: AppColor.greenColor)))),
+            onPressed: () {
+              productsList[0].isChecked == true
+                  ? productsList.forEach((element) {
+                      element.isChecked = false;
+                    })
+                  : productsList.forEach((element) {
+                      element.isChecked = true;
+                    });
+              setState(() {});
+            },
+            child: CustomText(
+              text: "تحديد الكل",
+              textColor: AppColor.greenColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            )),
+      ),
     );
   }
 }

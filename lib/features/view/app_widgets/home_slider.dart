@@ -74,7 +74,7 @@ class _HomeSliderState extends State<HomeSlider> {
               ),
               child: SmoothPageIndicator(
                 controller: _pageController!,
-                count: AppConst.imageAsset.length,
+                count: AppConst.imageAsset.length-1,
                 onDotClicked: (index) {
                   _pageController!.jumpToPage(index);
                   setState(() {});

@@ -400,20 +400,22 @@ class RoundedRectangleWithText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      width: (screenWidth / 2.5),
-      height: 50,
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        border: Border.all(width: 1.0, color: color!),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Center(
-        child: CustomText(
-          text: text,
-          textColor: color,
-          fontSize: 16,
-          textDirection: TextDirection.rtl,
+    return FittedBox(
+      child: Container(
+        width: screenWidth / 2.5,
+        height: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          border: Border.all(width: 1.0, color: color!),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: CustomText(
+            text: text,
+            textColor: color,
+            fontSize: 16,
+            textDirection: TextDirection.rtl,
+          ),
         ),
       ),
     );
@@ -608,7 +610,9 @@ class RecomendedProducts extends StatelessWidget {
       children: [
         Container(
           width: AppConst.screenWidth / 2.5,
-          height: AppConst.screenHeight * 0.31,
+          height: AppConst.screenHeight >= 800
+              ? AppConst.screenHeight / 3.3
+              : AppConst.screenHeight / 2.5,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColor.greenColor, width: .5),
@@ -827,7 +831,9 @@ displayDetailsBottomSheet(BuildContext context) {
       builder: (BuildContext context) {
         return Container(
           padding: const EdgeInsets.all(20),
-          height: AppConst.screenHeight / 1.5,
+          height: AppConst.screenHeight >= 800
+              ? AppConst.screenHeight / 1.5
+              : AppConst.screenHeight / 1.2,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -835,8 +841,8 @@ displayDetailsBottomSheet(BuildContext context) {
               topRight: Radius.circular(40.0),
             ),
           ),
-          child: ListView(
-            children: <Widget>[
+          child: Column(
+            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -856,23 +862,34 @@ displayDetailsBottomSheet(BuildContext context) {
                 ],
               ),
               const SizedBox(
-                height: 50,
+                height: 10,
               ),
-              CustomText(
-                text:
-                    '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu in at sit sed tristique. Massa cursus pellentesque laoreet dignissim lacus etiam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. mauris.''',
-                textAlign: TextAlign.right,
-                fontSize: 16,
-                textColor: AppColor.detailsColor,
-              ),
-              const PageViewContainer(
-                index: 1,
-              ),
-              const PageViewContainer(
-                index: 1,
-              ),
-              const PageViewContainer(
-                index: 1,
+              Expanded(
+                child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    CustomText(
+                      text:
+                          '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu in at sit sed tristique. Massa cursus pellentesque laoreet dignissim lacus etiam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. mauris.''',
+                      textAlign: TextAlign.right,
+                      fontSize: 16,
+                      textColor: AppColor.detailsColor,
+                    ),
+                    const PageViewContainer(
+                      index: 1,
+                    ),
+                    const PageViewContainer(
+                      index: 1,
+                    ),
+                    const PageViewContainer(
+                      index: 1,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -922,6 +939,7 @@ displayProparatiesBottomSheet(BuildContext context) {
               ),
               Expanded(
                 child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return _buildProparatiesContainer(index);
@@ -934,6 +952,7 @@ displayProparatiesBottomSheet(BuildContext context) {
         );
       });
 }
+
 _buildProparatiesContainer(int index) {
   return Container(
     width: double.infinity,
@@ -977,9 +996,9 @@ displayEvaluationBottomSheet(BuildContext context) {
               topRight: Radius.circular(40.0),
             ),
           ),
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -996,7 +1015,7 @@ displayEvaluationBottomSheet(BuildContext context) {
                     ),
                   ),
                   CustomText(
-                    text: 'الخصائص',
+                    text: 'التقييمات',
                     textColor: AppColor.blackColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -1010,110 +1029,118 @@ displayEvaluationBottomSheet(BuildContext context) {
                 ],
               ),
               const SizedBox(
-                height: 30,
+                height: 10,
               ),
-              CustomBackGroundContainer(
-                height: 140,
-                child: FittedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      SizedBox(
-                        width: 23,
+              Expanded(
+                child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    CustomBackGroundContainer(
+                      height: 140,
+                      child: FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: const [
+                            SizedBox(
+                              width: 23,
+                            ),
+                            FittedBox(child: LeftRatingColumn()),
+                            SizedBox(
+                              width: 30,
+                            ),
+                            FittedBox(child: RightRatingColumn()),
+                            SizedBox(
+                              width: 23,
+                            ),
+                          ],
+                        ),
                       ),
-                      FittedBox(child: LeftRatingColumn()),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      FittedBox(child: RightRatingColumn()),
-                      SizedBox(
-                        width: 23,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              CustomRatingBarStars(
-                initRating: 5,
-                itemSize: 10,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomDetailsText(
-                fontSize: 14,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  RartingPicContainer(),
-                  RartingPicContainer(),
-                  RartingPicContainer(),
-                ],
-              ),
-              const UserCommentInfoRow(),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomDivider(
-                lineColor: AppColor.whiteGreyColor,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomRatingBarStars(
-                initRating: 5,
-                itemSize: 10,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomDetailsText(
-                fontSize: 14,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const UserCommentInfoRow(),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CustomText(
-                    text: "متجر شانيل",
-                    textColor: AppColor.blackColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                  CustomSizedBox(
-                    width: 8,
-                  ),
-                  Container(
-                    width: 20,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      image: const DecorationImage(
-                          image: AssetImage(AppMedia.crown),
-                          fit: BoxFit.contain,
-                          scale: 1),
                     ),
-                  ),
-                  CustomSizedBox(
-                    width: 30,
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 50.0, top: 10),
-                child: CustomDetailsText(
-                  fontSize: 14,
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    CustomRatingBarStars(
+                      initRating: 5,
+                      itemSize: 10,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomDetailsText(
+                      fontSize: 14,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        RartingPicContainer(),
+                        RartingPicContainer(),
+                        RartingPicContainer(),
+                      ],
+                    ),
+                    const UserCommentInfoRow(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomDivider(
+                      lineColor: AppColor.whiteGreyColor,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomRatingBarStars(
+                      initRating: 5,
+                      itemSize: 10,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomDetailsText(
+                      fontSize: 14,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const UserCommentInfoRow(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CustomText(
+                          text: "متجر شانيل",
+                          textColor: AppColor.blackColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                        CustomSizedBox(
+                          width: 8,
+                        ),
+                        Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            image: const DecorationImage(
+                                image: AssetImage(AppMedia.crown),
+                                fit: BoxFit.contain,
+                                scale: 1),
+                          ),
+                        ),
+                        CustomSizedBox(
+                          width: 30,
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 50.0, top: 10),
+                      child: CustomDetailsText(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -1130,7 +1157,9 @@ displayAddNewRateBottomShete(BuildContext context) {
       builder: (BuildContext context) {
         return Container(
           padding: const EdgeInsets.all(30),
-          height: AppConst.screenHeight / 1.3,
+          height: AppConst.screenHeight >= 800
+              ? AppConst.screenHeight / 1.3
+              : AppConst.screenHeight / 1.2,
           width: double.infinity,
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -1139,9 +1168,10 @@ displayAddNewRateBottomShete(BuildContext context) {
               topRight: Radius.circular(40.0),
             ),
           ),
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1161,117 +1191,127 @@ displayAddNewRateBottomShete(BuildContext context) {
                 ],
               ),
               const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CustomRatingBarStars(
-                    initRating: 0,
-                    itemSize: 30,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  CustomText(
-                    text: "تقييمك",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    textColor: AppColor.headLineColor,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              TextField(
-                maxLines: 10,
-                minLines: 8,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide:
-                            BorderSide(color: AppColor.whiteGreyColor))),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomText(
-                text: "إضافة صورة",
-                textColor: AppColor.headLineColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                textDirection: TextDirection.rtl,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                      margin:
-                          const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: AppColor.whiteGreyColor,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.add_photo_alternate_outlined,
-                          color: Colors.white,
-                        ),
-                      )),
-                  RartingPicContainer(
-                    width: 80,
-                    height: 80,
-                  ),
-                ],
-              ),
-              const SizedBox(
                 height: 10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CustomText(
-                    text: "هل تريد إخفاء هويتك",
-                    textColor: AppColor.detailsColor,
-                    fontSize: 14,
-                  ),
-                  Checkbox(
-                    visualDensity:
-                        const VisualDensity(horizontal: -4, vertical: -4),
-                    value: true,
-                    onChanged: (value) {},
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+              Expanded(
+                child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CustomRatingBarStars(
+                          initRating: 0,
+                          itemSize: 30,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        CustomText(
+                          text: "تقييمك",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          textColor: AppColor.headLineColor,
+                        ),
+                      ],
                     ),
-                    checkColor: AppColor.whiteColor,
-                    activeColor: AppColor.greenColor,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              SizedBox(
-                width: AppConst.screenWidth / 1.2,
-                height: 50,
-                child: TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColor.greenColor),
-                        shape: MaterialStateProperty
-                            .all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                side: BorderSide(color: AppColor.greenColor)))),
-                    onPressed: () {},
-                    child: CustomText(
-                      text: "إرسال تعليق",
-                      textColor: AppColor.whiteColor,
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    TextField(
+                      maxLines: 10,
+                      minLines: 8,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide:
+                                  BorderSide(color: AppColor.whiteGreyColor))),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomText(
+                      text: "إضافة صورة",
+                      textColor: AppColor.headLineColor,
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    )),
+                      fontWeight: FontWeight.w500,
+                      textDirection: TextDirection.rtl,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                            margin: const EdgeInsets.only(
+                                left: 10, top: 10, bottom: 10),
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: AppColor.whiteGreyColor,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.add_photo_alternate_outlined,
+                                color: Colors.white,
+                              ),
+                            )),
+                        RartingPicContainer(
+                          width: 80,
+                          height: 80,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CustomText(
+                          text: "هل تريد إخفاء هويتك",
+                          textColor: AppColor.detailsColor,
+                          fontSize: 14,
+                        ),
+                        Checkbox(
+                          visualDensity:
+                              const VisualDensity(horizontal: -4, vertical: -4),
+                          value: true,
+                          onChanged: (value) {},
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          checkColor: AppColor.whiteColor,
+                          activeColor: AppColor.greenColor,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    SizedBox(
+                      width: AppConst.screenWidth / 1.2,
+                      height: 50,
+                      child: TextButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  AppColor.greenColor),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      side: BorderSide(
+                                          color: AppColor.greenColor)))),
+                          onPressed: () {},
+                          child: CustomText(
+                            text: "إرسال تعليق",
+                            textColor: AppColor.whiteColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          )),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
