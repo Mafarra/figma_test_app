@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 20,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: const [
                 RecomendedProducts(),
                 RecomendedProducts(),
@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Container _soldWithListView() {
     return Container(
       width: AppConst.screenWidth / 2,
-      height: AppConst.screenHeight >=800?AppConst.screenHeight/3: AppConst.screenHeight/2.5,
+      height: AppConst.screenHeight >=800?AppConst.screenHeight/3: AppConst.screenHeight/1.2,
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -162,15 +162,17 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return Row(
-            children: [
-              CustomSizedBox(
-                width: 20,
-              ),
-              _buildListViewItem(
-                  context: context,
-                  productModel: AppConst.productsItems[index]),
-            ],
+          return Expanded(
+            child: Row(
+              children: [
+                CustomSizedBox(
+                  width: 20,
+                ),
+                _buildListViewItem(
+                    context: context,
+                    productModel: AppConst.productsItems[index]),
+              ],
+            ),
           );
         },
         itemCount: AppConst.productsItems.length,
@@ -180,76 +182,84 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildListViewItem(
       {BuildContext? context, ProductModel? productModel}) {
-    return Container(
-      width: AppConst.screenWidth * 0.27,
-      height: AppConst.screenHeight * 0.22,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColor.greenColor, width: 1),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Theme(
-                data: ThemeData(unselectedWidgetColor: AppColor.whiteGreyColor),
-                child: Checkbox(
-                  tristate: false,
-                  visualDensity:
-                      const VisualDensity(horizontal: -4, vertical: -4),
-                  value: productModel?.isChecked ?? false,
-                  onChanged: (bool? newValue) {
-                    setState(() {
-                      productModel!.isChecked = newValue!;
-                    });
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  checkColor: AppColor.whiteColor,
-                  activeColor: AppColor.greenColor,
-                ),
-              ),
-            ],
-          ),
-          Container(
-            width: 61,
-            height: 69,
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            width: AppConst.screenWidth * 0.27,
+            height: AppConst.screenHeight * 0.22,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage(
-                    productModel?.img! ?? "",
-                  )),
+              border: Border.all(color: AppColor.greenColor, width: 1),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Theme(
+                      data: ThemeData(unselectedWidgetColor: AppColor.whiteGreyColor),
+                      child: Checkbox(
+                        tristate: false,
+                        visualDensity:
+                            const VisualDensity(horizontal: -4, vertical: -4),
+                        value: productModel?.isChecked ?? false,
+                        onChanged: (bool? newValue) {
+                          setState(() {
+                            productModel!.isChecked = newValue!;
+                          });
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        checkColor: AppColor.whiteColor,
+                        activeColor: AppColor.greenColor,
+                      ),
+                    ),
+                  ],
+                ),
+                FittedBox(
+                  child: Container(
+                    width: 61,
+                    height: 69,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                            productModel?.img! ?? "",
+                          )),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                CustomText(
+                  text: productModel?.productName ?? "",
+                  textColor: AppColor.blackColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.center,
+                ),
+                CustomSizedBox(
+                  height: 1,
+                ),
+                CustomText(
+                  text: productModel?.productPrice ?? "",
+                  textColor: AppColor.blackColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.center,
+                ),
+                CustomSizedBox(
+                  height: 1,
+                ),
+              ],
             ),
           ),
-          const Spacer(),
-          CustomText(
-            text: productModel?.productName ?? "",
-            textColor: AppColor.blackColor,
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            textDirection: TextDirection.rtl,
-            textAlign: TextAlign.center,
-          ),
-          CustomSizedBox(
-            height: 1,
-          ),
-          CustomText(
-            text: productModel?.productPrice ?? "",
-            textColor: AppColor.blackColor,
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            textDirection: TextDirection.rtl,
-            textAlign: TextAlign.center,
-          ),
-          CustomSizedBox(
-            height: 1,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

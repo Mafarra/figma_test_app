@@ -612,20 +612,22 @@ class RecomendedProducts extends StatelessWidget {
           width: AppConst.screenWidth / 2.5,
           height: AppConst.screenHeight >= 800
               ? AppConst.screenHeight / 3.3
-              : AppConst.screenHeight / 2.5,
+              : AppConst.screenHeight / 1.2,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColor.greenColor, width: .5),
           ),
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                height: AppConst.screenWidth / 2.6,
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                      fit: BoxFit.cover, image: AssetImage(AppMedia.parfum2)),
-                  borderRadius: BorderRadius.circular(12),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  height: AppConst.screenHeight / 2.6,
+                  decoration: BoxDecoration(
+                    image: const DecorationImage(
+                        fit: BoxFit.cover, image: AssetImage(AppMedia.parfum2)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
               CustomSizedBox(
@@ -793,26 +795,30 @@ class StoreAdvertCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                CustomTextButonWithIcon(
-                  isLeftIcon: false,
-                  width: AppConst.screenWidth / 3.5,
-                  backGroundColor: AppColor.whiteColor,
-                  text: "متابعة",
-                  icon: Icons.person_add_alt,
-                  textColor: AppColor.greenColor,
-                  iconColor: AppColor.greenColor,
+                Expanded(
+                  child: CustomTextButonWithIcon(
+                    isLeftIcon: false,
+                    width: AppConst.screenWidth / 3.5,
+                    backGroundColor: AppColor.whiteColor,
+                    text: "متابعة",
+                    icon: Icons.person_add_alt,
+                    textColor: AppColor.greenColor,
+                    iconColor: AppColor.greenColor,
+                  ),
                 ),
                 CustomSizedBox(
                   width: 10,
                 ),
-                CustomTextButonWithIcon(
-                  isLeftIcon: true,
-                  width: AppConst.screenWidth / 3.5,
-                  backGroundColor: AppColor.greenColor,
-                  text: "زيارة المتجر",
-                  icon: Icons.arrow_back,
-                  textColor: AppColor.whiteColor,
-                  iconColor: AppColor.whiteColor,
+                Expanded(
+                  child: CustomTextButonWithIcon(
+                    isLeftIcon: true,
+                    width: AppConst.screenWidth / 3.5,
+                    backGroundColor: AppColor.greenColor,
+                    text: "زيارة المتجر",
+                    icon: Icons.arrow_back,
+                    textColor: AppColor.whiteColor,
+                    iconColor: AppColor.whiteColor,
+                  ),
                 ),
               ],
             ),
